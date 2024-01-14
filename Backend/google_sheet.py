@@ -15,9 +15,16 @@ client = gspread.authorize(credentials)
 
 # Open the correct sheets and make necessary updates
 sheet = client.open('SAC Elections')
-
 login_info = sheet.get_worksheet(0)
-pres1 = login_info.acell('A2').value
-print(pres1)
+emails = login_info.col_values(3)
+headers = sheet.row_values(1)
 
-candidates = sheet.get_worksheet(1)
+def record_vote(candidate, voter, role):
+    row_index = headers.row_index(role)
+    col_index = emails.col_index(voter)
+
+    login_info.update_cell(row_index + 1, col_index + 1, candidate)
+
+
+
+
