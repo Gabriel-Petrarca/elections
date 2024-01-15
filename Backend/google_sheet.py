@@ -5,7 +5,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 # Authenticate Google API credentials. Create the spreadsheet and share it with necessary users
 scope = ['https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive"]
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name('gs-credentials.json', scope)
+credentials = ServiceAccountCredentials.from_json_keyfile_name('/home/gabriel/elections/Backend/gs-credentials.json', scope)
 client = gspread.authorize(credentials)
 
 #sheet = client.create("SAC Elections")
@@ -17,7 +17,7 @@ client = gspread.authorize(credentials)
 sheet = client.open('SAC Elections')
 login_info = sheet.get_worksheet(0)
 emails = login_info.col_values(3)
-headers = sheet.row_values(1)
+headers = login_info.row_values(1)
 
 def record_vote(candidate, voter, role):
     row_index = headers.row_index(role)

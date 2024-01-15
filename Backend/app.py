@@ -11,7 +11,7 @@ voting_status = {'President' : False, 'Membership' : False, 'AO' : False, 'SE' :
 
 @app.route("/")
 def index():
-    return "Hello world"
+    return render_template('/Frontend/src/pages/home.js')
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -34,7 +34,6 @@ def handle_submit_vote(data):
     voter = data['voter']
     candidate = data['candidate']
     
-    # Use functions from google_sheets.py to record the vote
     record_vote(candidate, voter, role)
 
     # Emit event to confirm vote submission to the specific client
@@ -51,5 +50,5 @@ def close_vote(role, canidate):
         voting_status[role] = False
 
 if __name__ == '__main__':
-    app.run(host = "localhost", debug = True)
+    app.run(host = "localhost",port=5000, debug = True)
     socketio.run(app)
