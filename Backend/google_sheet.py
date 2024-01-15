@@ -1,6 +1,8 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from flask import Flask, jsonify
 
+app = Flask()
 
 # Authenticate Google API credentials. Create the spreadsheet and share it with necessary users
 scope = ['https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive"]
