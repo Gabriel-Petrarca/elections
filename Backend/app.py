@@ -10,11 +10,11 @@ has_voted = {}
 voting_status = {'President' : False, 'Membership' : False, 'AO' : False, 'SE' : False, 'Marketing' : False, 'Finance' : False, 'I&B' : False}
 
 
-@app.route('/api/candidates')
-def candidates():
+@app.route('/api/pres_candidates')
+def pres_candidates():
     # Fetch candidate information and return as JSON
     candidate_data = get_pres_candidates()
-    return jsonify({'candidates': candidate_data})
+    return jsonify({'pres_candidates': candidate_data})
 
 @app.route('/login', methods=['POST'])
 def login():
