@@ -1,17 +1,20 @@
-from flask import Flask, render_template, session, request, redirect, url_for
+from flask import Flask, render_template, session, request, redirect, url_for, jsonify
 from flask_socketio import SocketIO
-from google_sheet import emails, record_vote
+from google_sheet import emails, record_vote, get_pres_candidates
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../../frontend/src')
 app.config['SECRET'] = "coolWebsite"
 socketio = SocketIO(app)
 
 has_voted = {}
 voting_status = {'President' : False, 'Membership' : False, 'AO' : False, 'SE' : False, 'Marketing' : False, 'Finance' : False, 'I&B' : False}
 
-@app.route("/")
-def index():
-    return render_template('/Frontend/src/pages/home.js')
+
+@app.route('/api/candidates')
+def candidates():
+    # Fetch candidate information and return as JSON
+    candidate_data = get_pres_candidates()
+    return jsonify({'candidates': candidate_data})
 
 @app.route('/login', methods=['POST'])
 def login():
