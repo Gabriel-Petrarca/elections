@@ -41,10 +41,8 @@ function President() {
       <div className="headerContainer">
         <h1>Vote for President</h1>
         <div className="candidates">
-          {Pres_Candidates.map(candidate => (
-            <button key={candidate.id} onClick={() => setOptionChosen(candidate.id)}>
-              {candidate.name}
-            </button>
+        {Pres_Candidates.map((candidate, index) => (
+            <button key={index}>{candidate}</button>
           ))}
         </div>
         <button>Submit Vote</button>
