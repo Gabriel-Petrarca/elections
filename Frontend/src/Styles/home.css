@@ -32,8 +32,8 @@
     color: black;
   }
   
+  /*This is the submit vote button*/
   .headerContainer button {
-    color: black;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -47,7 +47,7 @@
   }
   
   .headerContainer button:hover {
-    background-color: #07090a;
+    background-color: #dde1e2;
     cursor: pointer;
     transition: 0.3s ease-in;
   }
@@ -68,19 +68,20 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      background-color: #121619;
-      color: white;
+      background-color: #fbcaca;
+      color: black;
     }
   
+    /*The vote for president header when the screen is made small*/
     .headerContainer h1 {
       font-size: 40px;
       height: 30px;
-      color: white;
+      color: black;
     }
   
     .headerContainer p {
       font-size: 30px;
-      color: white;
+      color: black;
     }
   
     .headerContainer button {
