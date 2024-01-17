@@ -9,6 +9,9 @@ socketio = SocketIO(app)
 has_voted = {}
 voting_status = {'President' : False, 'Membership' : False, 'AO' : False, 'SE' : False, 'Marketing' : False, 'Finance' : False, 'I&B' : False}
 
+@app.route('/voting_status')
+def getJsonVoteStatus():
+    return jsonify({'voting_status': voting_status})
 
 @app.route('/api/pres_candidates')
 def pres_candidates():
