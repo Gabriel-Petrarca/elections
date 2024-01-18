@@ -2,11 +2,10 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from flask import Flask, jsonify
 
-
 # Authenticate Google API credentials. Create the spreadsheet and share it with necessary users
 scope = ['https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive"]
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name(r'C:\Users\spang\elections\Backend\gs-credentials.json', scope)
+credentials = ServiceAccountCredentials.from_json_keyfile_name('/home/gabriel/elections/Backend/gs-credentials.json', scope)
 client = gspread.authorize(credentials)
 
 #sheet = client.create("SAC Elections")
@@ -23,7 +22,7 @@ headers = login_info.row_values(1)
 
 def record_vote(candidate, voter, role):
     row_index = headers.row_index(role)
-    col_index = emails.col_index(voter)
+    col_index = emails.col_index("Petrarca.26@buckeyemail.osu.edu")
 
     login_info.update_cell(row_index + 1, col_index + 1, candidate)
 
