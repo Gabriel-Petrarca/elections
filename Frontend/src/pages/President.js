@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import socketIOClient from 'socket.io-client'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../Styles/votescreen.css';
 
 const socket = socketIOClient('http://localhost:5000'); 
@@ -8,6 +8,7 @@ const socket = socketIOClient('http://localhost:5000');
 function President() {
   const [Pres_Candidates, setPres_Candidates] =useState([]);
   const [optionChosen, setOptionChosen] = useState("")
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCandidates();
@@ -34,18 +35,20 @@ function President() {
   
   const submit_Vote = (role, voter, candidate) => {
     socket.emit('submit_vote', { role, voter, candidate });
+    navigate('/thanksforvoting')
   };
 
   return (
     <div className="President">
-      <div className="headerContainer">
+      <div className="vote_for_name">
         <h1>Vote for President</h1>
         <div className="candidates">
         {Pres_Candidates.map((candidate, index) => (
             <button key={index}>{candidate}</button>
           ))}
         </div>
-        <button>Submit Vote</button>
+        <button className="submit_vote_button" onClick={() => submit_Vote('President', 'VoterID', optionChosen)}>
+        Submit Vote</button>
       </div>
     </div>
   );
