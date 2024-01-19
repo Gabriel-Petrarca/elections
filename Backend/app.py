@@ -24,7 +24,7 @@ def logout():
     session.pop('user_email', None)
     return redirect(url_for('index'))
 
-@app.route('/voting_status')
+@app.route('/get_voting_status')
 def getJsonVoteStatus():
     return jsonify({'voting_status': voting_status})
 
@@ -48,16 +48,15 @@ def handle_submit_vote():
     else:
         return jsonify({'error': 'Invalid data'}), 400
 
-@app.route('/open_vote/<role>')
-def open_vote(role, candidate):
-    if candidate.lower() == "sacadminaccount":
+@app.route('/open_vote')
+def open_vote(user, role):
+    if user.lower() == "osusaccos@gmail.com":
         voting_status[role] = True
 
-@app.route('/close_vote/<role>')
-def close_vote(role, candidate):
-    if candidate.lower() == "sacadminaccount":
+@app.route('/close_vote')
+def close_vote(user, role):
+    if user.lower() == "osusaccos@gmail.com":
         voting_status[role] = False
-
 
 if __name__ == '__main__':
     app.run(debug=True)
