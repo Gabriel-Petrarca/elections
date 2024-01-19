@@ -4,8 +4,29 @@
     background-color: #ce1c0f;
     display: flex;
     flex-direction: row;
+    align-items: center;
   }
   
+  .navbar button {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    height: 40px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: black
+  }
+
+  .navbar button:hover {
+    background-color: black;
+    color: white;
+  }
+
   .navbar .leftSide {
     flex: 50%;
     height: 100%;
@@ -23,7 +44,7 @@
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
   }
   
   .navbar a {
@@ -32,12 +53,6 @@
     margin: 20px;
   }
   
-  .navbar .rightSide button {
-    background-color: transparent;
-    border: none;
-    color: white;
-    cursor: pointer;
-  }
   
   .navbar .rightSide svg {
     font-size: 40px;
