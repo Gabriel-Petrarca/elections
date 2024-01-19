@@ -1,6 +1,6 @@
 from flask import Flask, render_template, session, request, redirect, url_for, jsonify
 from flask_cors import CORS
-from google_sheet import emails, record_vote, get_pres_candidates, voters_map, get_AO_candidates, get_Finance_candidates, get_IandB_candidates, get_MC_candidates, get_memb_candidates, get_SE_candidates
+from google_sheet import emails, record_vote, get_pres_candidates, voters_map, get_AO_candidates, get_Finance_candidates, get_IandB_candidates, get_MC_candidates, get_memb_candidates, get_SE_candidates, login_info
 
 app = Flask(__name__, template_folder='../../frontend/src')
 CORS(app)
@@ -17,19 +17,34 @@ IandB_candidates_data = get_IandB_candidates()
 
 @app.route('/login', methods=['POST'])
 def login():
-    email = request.form.get('email')
-    password = request.form.get('password')
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
 
-    if email in emails and password == "SACelections":
-        session['user_email'] = email
-        return redirect(url_for('index'))
-    else:
-        return 'Invalid email'
+    if email == "osusaccos@gmail.com":
+        admin_password = login_info.acell('D2').value
+        if password == admin_password:
+            is_admin = True
+            session['user_email'] = email  # Store user email in session
+            return jsonify({'redirect': '/', 'is_admin': is_admin})
     
+    elif email in emails and password == "SACelections":
+        is_admin = False
+        session['user_email'] = email  # Store user email in session
+        return jsonify({'redirect': '/', 'is_admin': is_admin})
+    else:
+        is_admin = False
+        return jsonify({'error': 'Invalid credentials', 'is_admin': is_admin}), 401
+
 @app.route('/logout')
 def logout():
     session.pop('user_email', None)
     return redirect(url_for('index'))
+
+@app.route('/check_admin_status')
+def check_admin_status():
+    is_admin = True if session.get('user_email') == "osusaccos@gmail.com" else False
+    return jsonify({'is_admin': is_admin})
 
 @app.route('/get_voting_status')
 def getJsonVoteStatus():

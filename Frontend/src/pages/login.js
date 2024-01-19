@@ -21,12 +21,13 @@ function Login() {
         }),
       });
 
+      const result = await response.json();
+
       if (response.ok) {
         setErrorMessage("");
-        navigate('/');
+        navigate(result.redirect);
       } else {
-        const errorData = await response.json();
-        setErrorMessage(errorData.error || "Incorrect username or password");
+        setErrorMessage(result.error || "Incorrect username or password");
       }
     } catch (error) {
       console.error("Error during login:", error);
