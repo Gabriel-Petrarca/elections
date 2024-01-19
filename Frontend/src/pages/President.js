@@ -1,35 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Styles/votescreen.css';
-import { useSocket } from '/home/gabriel/elections/Frontend/src/socketContext.js';
 
 function President() {
   const [Pres_Candidates, setPres_Candidates] = useState([]);
   const [optionChosen, setOptionChosen] = useState("");
   const navigate = useNavigate();
-  const socket = useSocket(); // Use the useSocket hook to access the WebSocket instance
-
+  
   useEffect(() => {
     fetchCandidates();
+  }, []);
 
-    // Observe the connection event
-    socket.on('connect', () => {
-      console.log('Frontend connected');
-    });
-
-    socket.on('update_candidates', (data) => {
-      console.log('Received data from server:', data);
-      setPres_Candidates(data.pres_candidates);
-    });
-
-    return () => {
-      // Clean up socket connection when the component unmounts
-      socket.disconnect();
-    };
-  }, [socket]); // Run once when the component mounts
 
   const fetchCandidates = () => {
-    fetch('/api/pres_candidates')
+    fetch('/pres_candidates')
       .then((response) => response.json())
       .then((data) => {
         console.log('Fetched candidates data:', data);
@@ -38,9 +22,26 @@ function President() {
       .catch((error) => console.error('Error fetching candidates:', error));
   };
 
-  const submitVote = (role, voter, candidate) => {
-    socket.emit('submit_vote', { role, voter, candidate });
-    navigate('/thanksforvoting');
+  const submitVote = async (role, voter, candidate) => {
+    try {
+      // Make a POST request to submit the vote
+      const response = await fetch('/submit_vote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ role, voter, candidate }),
+      });
+
+      if (response.ok) {
+        // If the vote submission was successful, navigate to the "thanks for voting" page
+        navigate('/thanksforvoting');
+      } else {
+        console.error('Failed to submit vote:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error submitting vote:', error.message);
+    }
   };
 
   return (

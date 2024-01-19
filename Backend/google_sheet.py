@@ -20,11 +20,12 @@ candidates = sheet.get_worksheet(1)
 emails = login_info.col_values(3)
 headers = login_info.row_values(1)
 
-def record_vote(candidate, voter, role):
-    row_index = headers.row_index(role)
-    col_index = emails.col_index("Petrarca.26@buckeyemail.osu.edu")
+header_cols = {'President' : 'E', 'Membership' : 'F', 'AO' : 'G', 'SE' : 'H', 'Marketing' : 'I', 'Finance' : 'J', 'I&B' : 'K'}
 
-    login_info.update_cell(row_index + 1, col_index + 1, candidate)
+def record_vote(candidate, voter, role):
+        cell = header_cols[role] + str(emails.index(voter) + 1)
+
+        login_info.update(cell, candidate)
 
 def get_pres_candidates():
     candidates_data = candidates.col_values(1)[1:10]  # Assuming candidates are in column A starting from row 2 to row 5

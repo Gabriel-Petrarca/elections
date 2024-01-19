@@ -1,18 +1,13 @@
 from flask import Flask, render_template, session, request, redirect, url_for, jsonify
-from flask_socketio import SocketIO
-from google_sheet import emails, record_vote, get_pres_candidates
 from flask_cors import CORS
+from google_sheet import emails, record_vote, get_pres_candidates
 
 app = Flask(__name__, template_folder='../../frontend/src')
-app.config['SECRET'] = "coolWebsite"
 CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
+app.config['SECRET_KEY'] = "coolWebsite"
+
 has_voted = {}
 voting_status = {'President' : False, 'Membership' : False, 'AO' : False, 'SE' : False, 'Marketing' : False, 'Finance' : False, 'I&B' : False}
-
-@socketio.on('connect')
-def handle_connect():
-    print('Frontend connected')
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -33,35 +28,36 @@ def logout():
 def getJsonVoteStatus():
     return jsonify({'voting_status': voting_status})
 
-@app.route('/api/pres_candidates')
+@app.route('/pres_candidates')
 def pres_candidates():
     # Fetch candidate information and return as JSON
     candidate_data = get_pres_candidates()
     return jsonify({'pres_candidates': candidate_data})
 
 
-@socketio.on('submit_vote')
-def handle_submit_vote(data):
-    role = data['role']
-    voter = data['voter']
-    candidate = data['candidate']
-    
-    record_vote(candidate, voter, role)
+@app.route('/submit_vote', methods=['POST'])
+def handle_submit_vote():
+    data = request.json
+    role = data.get('role')
+    voter = data.get('voter')
+    candidate = data.get('candidate')
 
-    # Emit event to confirm vote submission to the specific client
-    socketio.emit('vote_submitted_confirmation', {'role': role, 'voter': voter, 'candidate': candidate})
+    if role and voter and candidate:
+        record_vote(candidate, voter, role)
+        return jsonify({'success': True})
+    else:
+        return jsonify({'error': 'Invalid data'}), 400
 
 @app.route('/open_vote/<role>')
-def open_vote(role, canidate):
-    if canidate.lower() == "sacadminaccount":
+def open_vote(role, candidate):
+    if candidate.lower() == "sacadminaccount":
         voting_status[role] = True
 
 @app.route('/close_vote/<role>')
-def close_vote(role, canidate):
-    if canidate.lower() == "sacadminaccount":
+def close_vote(role, candidate):
+    if candidate.lower() == "sacadminaccount":
         voting_status[role] = False
 
- 
 
 if __name__ == '__main__':
-    socketio.run(app, host="localhost", port=5000, debug=True, allow_unsafe_werkzeug=True)
+    app.run(debug=True)
