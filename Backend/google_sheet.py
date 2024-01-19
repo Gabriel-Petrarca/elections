@@ -1,11 +1,12 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from flask import Flask, jsonify
+from gspread import Cell
 
 # Authenticate Google API credentials. Create the spreadsheet and share it with necessary users
 scope = ['https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive"]
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name(r'C:\Users\spang\elections\Backend\gs-credentials.json', scope)
+credentials = ServiceAccountCredentials.from_json_keyfile_name('/home/gabriel/elections/Backend/gs-credentials.json', scope)
 client = gspread.authorize(credentials)
 
 #sheet = client.create("SAC Elections")
@@ -20,17 +21,38 @@ candidates = sheet.get_worksheet(1)
 emails = login_info.col_values(3)
 headers = login_info.row_values(1)
 
-header_cols = {'President' : 'E', 'Membership' : 'F', 'AO' : 'G', 'SE' : 'H', 'Marketing' : 'I', 'Finance' : 'J', 'I&B' : 'K'}
+role_col = 5
+cell_list = []
+voters_map = {}
 
+
+def add_vote(voter, candidate):
+    voters_map[voter] = candidate
 def record_vote(candidate, voter, role):
-        cell = header_cols[role] + str(emails.index(voter) + 1)
-
-        login_info.update(cell, candidate)
+    for voter, candidate in voters_map:
+        row_index = login_info.col_values(3).index(voter) + 1  
+        cell_list.append(Cell(row_index, role_col, candidate))
+    role_col = role_col + 1
+    login_info.update_cells(cell_list)
 
 def get_pres_candidates():
-    candidates_data = candidates.col_values(1)[1:10]  # Assuming candidates are in column A starting from row 2 to row 5
+    candidates_data = candidates.col_values(1)[1:10] 
     return candidates_data
-
-
-
-
+def get_memb_candidates():
+    candidates_data = candidates.col_values(2)[1:10] 
+    return candidates_data
+def get_AO_candidates():
+    candidates_data = candidates.col_values(3)[1:10] 
+    return candidates_data
+def get_SE_candidates():
+    candidates_data = candidates.col_values(4)[1:10] 
+    return candidates_data
+def get_MC_candidates():
+    candidates_data = candidates.col_values(5)[1:10] 
+    return candidates_data
+def get_Finance_candidates():
+    candidates_data = candidates.col_values(6)[1:10] 
+    return candidates_data
+def get_IandB_candidates():
+    candidates_data = candidates.col_values(7)[1:10] 
+    return candidates_data

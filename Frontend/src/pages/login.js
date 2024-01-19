@@ -1,26 +1,36 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import '../Styles/login.css'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../Styles/login.css';
 
-/*Gabe you need to add the google sheet login column to the username variable*/
 function Login() {
-  const username = "SACelections";
-  const password = "SACelections";
-
   const [usernameState, setUsernameState] = useState("");
   const [passwordState, setPasswordState] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
+  async function loggingIn() {
+    try {
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: usernameState,
+          password: passwordState,
+        }),
+      });
 
-  function loggingIn() {
-    if (usernameState === username && passwordState === password) {
-      setLoggedIn(true);
-      setErrorMessage("");
-      navigate('/');
-    } else {
-      setErrorMessage("Incorrect username or password");
+      if (response.ok) {
+        setErrorMessage("");
+        navigate('/');
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.error || "Incorrect username or password");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      setErrorMessage("An error occurred during login.");
     }
   }
 
@@ -29,13 +39,8 @@ function Login() {
         <div className='login'>
             <h1>Log In</h1>
 
-            <input type="text" onChange={(event) => 
-                setUsernameState(event.target.value)
-            } />
-
-            <input type="password" onChange={(event) => 
-                setPasswordState(event.target.value)
-            } />
+            <input type="text" onChange={(event) => setUsernameState(event.target.value)} />
+            <input type="password" onChange={(event) => setPasswordState(event.target.value)} />
 
             <button onClick={loggingIn}>Submit</button>
 
@@ -45,4 +50,4 @@ function Login() {
   );
 }
 
-export default Login
+export default Login;

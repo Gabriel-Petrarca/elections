@@ -1,5 +1,5 @@
 import React from 'react';
-import { SocketProvider } from 'C:/Users/spang/elections/Frontend/src/socketContext.js'; // Adjust the path as needed
+import { SocketProvider } from '/home/gabriel/elections/Frontend/src/socketContext.js'; // Adjust the path as needed
 import Navbar from './Components/Navbar';
 import President from './pages/President';
 import Home from './pages/home';
