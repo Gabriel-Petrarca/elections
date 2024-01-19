@@ -1,0 +1,32 @@
+.admin {
+    width: 500px%;
+    height: 100%;
+    border-radius: 10px;
+    background-color: #e1dada;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin button {
+    width: 300px;
+    margin: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.admin h1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.admin_pres, .admin_mem, .admin_ao,.admin_se, .admin_mc, .admin_finance, .admin_ib {
+  border: 2px solid red; 
+  border-radius: 8px; 
+  margin: 15px; 
+  padding: 15px; 
+  font-family: 'Times New Roman', Times, serif;
+}
