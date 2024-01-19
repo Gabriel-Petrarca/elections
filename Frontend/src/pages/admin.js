@@ -6,7 +6,7 @@ function admin() {
     <div className = "admin">
         <div className = 'admin_pres'>
             <h1>President</h1>
-            <button>Open President Vote</button>
+            <button >Open President Vote</button>
             <button>Close President Vote</button>
         </div>
         <div className = 'admin_mem'>

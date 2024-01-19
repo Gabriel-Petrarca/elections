@@ -7,9 +7,21 @@ function President() {
   const [optionChosen, setOptionChosen] = useState("");
   const navigate = useNavigate();
   
+
   useEffect(() => {
-    fetchCandidates();
-  }, []);
+    fetch('/get_voting_status')
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.voting_status.President) {
+          // Voting for President is closed, redirect to the home page
+          navigate('/');
+        } else {
+          // Voting is open, fetch candidates
+          fetchCandidates();
+        }
+      })
+      .catch((error) => console.error('Error fetching voting status:', error));
+  }, []);
 
 
   const fetchCandidates = () => {
