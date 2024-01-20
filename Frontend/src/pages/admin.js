@@ -1,66 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import '../Styles/admin.css'
 
 
-function Admin() {
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // New state for login status
-    const navigate = useNavigate();
-  
-    useEffect(() => {
-      const checkAdminStatus = async () => {
-        try {
-          const response = await fetch('/check_admin_status');
-          const result = await response.json();
-  
-          if (response.ok) {
-            setIsAdmin(result.is_admin);
-            setIsLoggedIn(true); // Set login status to true if admin
-          } else {
-            console.error(result.error || "Error checking admin status");
-            setIsLoggedIn(false); // Set login status to false if not admin
-          }
-        } catch (error) {
-          console.error("Error checking admin status:", error);
-          setIsLoggedIn(false);
-        }
-      };
-  
-      checkAdminStatus();
-    }, []);
-  
-    useEffect(() => {
-      // Redirect logic based on login and admin status
-      if (!isLoggedIn) {
-        // Redirect to login page if not logged in
-        navigate('/login');
-      } else if (isLoggedIn && !isAdmin) {
-        // Redirect to home if logged in but not admin
-        navigate('/');
-      }
-    }, [isLoggedIn, isAdmin, navigate]);
-  
-    const handleVoteAction = async (action, role) => {
+
+const Admin= () => {
+  const [isAdmin, setIsAdmin] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
       try {
-        const response = await fetch(`/open_vote?role=${role}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+        const response = await fetch('/check_admin_status', {
+          credentials: 'include',
         });
-  
+
         if (response.ok) {
-          console.log(`Successfully ${action}ed ${role} voting`);
-          // Handle any UI updates or redirects as needed
+          const data = await response.json();
+          setIsAdmin(data.is_admin);
         } else {
-          console.error(`Error ${action}ing ${role} voting`);
-          // Handle error scenarios
+          console.error('Error checking admin status');
         }
       } catch (error) {
-        console.error('Error during vote action:', error);
+        console.error('Error checking admin status:', error);
       }
-    };
+    };checkAdminStatus();
+  }, []);
+
+  if (isAdmin == null){
+    return <Navigate to="/"/>;
+  }
+  else if (isAdmin == false){
+    return <Navigate to="/login" />;
+  }
+
+  const handleVoteAction = async (action, role) => {
+    try {
+      const response = await fetch(`/open_vote?role=${role}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        console.log(`Successfully ${action}ed ${role} voting`);
+        // Handle any UI updates or redirects as needed
+      } else {
+        console.error(`Error ${action}ing ${role} voting`);
+        // Handle error scenarios
+      }
+    } catch (error) {
+      console.error('Error during vote action:', error);
+    }
+  };
+
   
   return (
     <div className = "admin">
