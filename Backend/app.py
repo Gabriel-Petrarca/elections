@@ -83,10 +83,11 @@ def handle_submit_vote():
         return jsonify({'error': 'Invalid data'}), 400
 
 
-@app.route('/open_vote')
+@app.route('/open_vote/<role>')
 @cross_origin(supports_credentials=True)
 def open_vote(role):
-    role_col += 1
+    global role_col
+    role_col = role_col + 1
     if role == "President":
         pres_candidate_data = get_pres_candidates()
     if role == "Membership":
@@ -103,11 +104,13 @@ def open_vote(role):
         IandB_candidates = get_IandB_candidates()
     voting_status[role] = True
     voters_map.clear()
+    return jsonify({"status": "success", "message": f"Vote for {role} opened successfully"})
 
-@app.route('/close_vote')
+@app.route('/close_vote/<role>')
 @cross_origin(supports_credentials=True)
 def close_vote(role):
     voting_status[role] = False
+    return jsonify({"status": "success", "message": f"Vote for {role} closed successfully"})
 
 @app.route('/pres_candidates')
 @cross_origin(supports_credentials=True)

@@ -42,10 +42,11 @@ const Admin= () => {
       });
   
       if (response.ok) {
-        console.log(`Successfully ${action}ed ${role} voting`);
+        const data = await response.json();
+        console.log(`Success: ${data.message}`);
         // Handle any UI updates or redirects as needed
       } else {
-        console.error(`Error ${action}ing ${role} voting`);
+        console.error(`Error: Unable to ${action} ${role} voting`);
         // Handle error scenarios
       }
     } catch (error) {
