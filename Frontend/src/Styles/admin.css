@@ -30,3 +30,13 @@
   padding: 15px; 
   font-family: 'Times New Roman', Times, serif;
 }
+
+.admin button:hover {
+    background-color: black;
+    color: white;
+  }
+
+  .admin button:focus {
+    background-color: rgb(244, 235, 163);
+    color: #121619;
+  }
