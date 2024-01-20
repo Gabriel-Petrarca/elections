@@ -31,14 +31,16 @@ const Admin= () => {
 
   const handleVoteAction = async (action, role) => {
     try {
-      const response = await fetch(`/open_vote?role=${role}`, {
+      const endpoint = action === 'open' ? `/open_vote/${role}` : `/close_vote/${role}`;
+  
+      const response = await fetch(endpoint, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
       });
-
+  
       if (response.ok) {
         console.log(`Successfully ${action}ed ${role} voting`);
         // Handle any UI updates or redirects as needed

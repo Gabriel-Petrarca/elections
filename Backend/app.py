@@ -85,31 +85,29 @@ def handle_submit_vote():
 
 @app.route('/open_vote')
 @cross_origin(supports_credentials=True)
-def open_vote(user, role):
+def open_vote(role):
     role_col += 1
-    if user.lower() == "osusaccos@gmail.com":
-        if role == "President":
-            pres_candidate_data = get_pres_candidates()
-        if role == "Membership":
-            memb_candidates_data = get_memb_candidates()
-        if role == "AO":
-            AO_candidates_data = get_AO_candidates()
-        if role == "SE":
-            SE_candidates_data = get_SE_candidates()
-        if role == "MC":
-            MC_candidates_data = get_MC_candidates()
-        if role == "Finance":
-            finance_candidates_data = get_Finance_candidates()
-        if role == "IandB":
-            IandB_candidates = get_IandB_candidates()
-        voting_status[role] = True
-        voters_map.clear()
+    if role == "President":
+        pres_candidate_data = get_pres_candidates()
+    if role == "Membership":
+        memb_candidates_data = get_memb_candidates()
+    if role == "AO":
+        AO_candidates_data = get_AO_candidates()
+    if role == "SE":
+        SE_candidates_data = get_SE_candidates()
+    if role == "MC":
+        MC_candidates_data = get_MC_candidates()
+    if role == "Finance":
+        finance_candidates_data = get_Finance_candidates()
+    if role == "IandB":
+        IandB_candidates = get_IandB_candidates()
+    voting_status[role] = True
+    voters_map.clear()
 
 @app.route('/close_vote')
 @cross_origin(supports_credentials=True)
-def close_vote(user, role):
-    if user.lower() == "osusaccos@gmail.com":
-        voting_status[role] = False
+def close_vote(role):
+    voting_status[role] = False
 
 @app.route('/pres_candidates')
 @cross_origin(supports_credentials=True)
