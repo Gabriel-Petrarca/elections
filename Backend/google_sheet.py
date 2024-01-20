@@ -28,12 +28,13 @@ voters_map = {}
 
 def add_vote(voter, candidate):
     voters_map[voter] = candidate
-def record_vote(candidate, voter, role):
+def record_vote():
     for voter, candidate in voters_map:
         row_index = login_info.col_values(3).index(voter) + 1  
         cell_list.append(Cell(row_index, role_col, candidate))
     role_col = role_col + 1
     login_info.update_cells(cell_list)
+    voters_map.clear()
 
 def get_pres_candidates():
     candidates_data = candidates.col_values(1)[1:10] 

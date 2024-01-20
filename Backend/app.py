@@ -1,12 +1,12 @@
 from flask import Flask, render_template, session, request, redirect, url_for, jsonify
 from flask_cors import CORS
-from google_sheet import emails, record_vote, get_pres_candidates, voters_map, get_AO_candidates, get_Finance_candidates, get_IandB_candidates, get_MC_candidates, get_memb_candidates, get_SE_candidates, login_info
+from google_sheet import emails, record_vote, get_pres_candidates, voters_map, get_AO_candidates, get_Finance_candidates, get_IandB_candidates, get_MC_candidates, get_memb_candidates, get_SE_candidates, login_info, add_vote
 
 app = Flask(__name__, template_folder='../../frontend/src')
 CORS(app)
 app.config['SECRET_KEY'] = "coolWebsite"
 
-voting_status = {'President' : False, 'Membership' : False, 'AO' : False, 'SE' : False, 'Marketing' : False, 'Finance' : False, 'I&B' : False}
+voting_status = {'President' : True, 'Membership' : False, 'AO' : False, 'SE' : False, 'Marketing' : False, 'Finance' : False, 'I&B' : False}
 pres_candidate_data = get_pres_candidates()
 memb_candidates_data = get_memb_candidates()
 AO_candidates_data = get_AO_candidates()
@@ -58,7 +58,9 @@ def handle_submit_vote():
     candidate = data.get('candidate')
     
     if role and voter and candidate and voter not in voters_map:
-        record_vote(candidate, voter, role)
+        if len(voters_map) >= 3:
+            record_vote()
+        add_vote(voter, candidate)
         return jsonify({'success': True})
     else:
         return jsonify({'error': 'Invalid data'}), 400
