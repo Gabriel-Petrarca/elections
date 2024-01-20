@@ -88,22 +88,32 @@ def handle_submit_vote():
 def open_vote(role):
     global role_col
     role_col = role_col + 1
+    candidates_data = None
+
     if role == "President":
-        pres_candidate_data = get_pres_candidates()
-    if role == "Membership":
+        pres_candidates_data = get_pres_candidates()
+        return jsonify({"status": "success", "message": f"Vote for {role} opened successfully", "candidates": pres_candidates_data})
+    elif role == "Membership":
         memb_candidates_data = get_memb_candidates()
-    if role == "AO":
+        return jsonify({"status": "success", "message": f"Vote for {role} opened successfully", "candidates": memb_candidates_data})
+    elif role == "AO":
         AO_candidates_data = get_AO_candidates()
-    if role == "SE":
+        return jsonify({"status": "success", "message": f"Vote for {role} opened successfully", "candidates": AO_candidates_data})
+    elif role == "SE":
         SE_candidates_data = get_SE_candidates()
-    if role == "MC":
+        return jsonify({"status": "success", "message": f"Vote for {role} opened successfully", "candidates": SE_candidates_data})
+    elif role == "MC":
         MC_candidates_data = get_MC_candidates()
-    if role == "Finance":
+        return jsonify({"status": "success", "message": f"Vote for {role} opened successfully", "candidates": MC_candidates_data})
+    elif role == "Finance":
         finance_candidates_data = get_Finance_candidates()
-    if role == "IandB":
-        IandB_candidates = get_IandB_candidates()
+        return jsonify({"status": "success", "message": f"Vote for {role} opened successfully", "candidates": finance_candidates_data})
+    elif role == "IandB":
+        IandB_candidates_data = get_IandB_candidates()
+        return jsonify({"status": "success", "message": f"Vote for {role} opened successfully", "candidates": IandB_candidates_data})
     voting_status[role] = True
     voters_map.clear()
+    
     return jsonify({"status": "success", "message": f"Vote for {role} opened successfully"})
 
 @app.route('/close_vote/<role>')

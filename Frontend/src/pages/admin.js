@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import '../Styles/admin.css'
 
 
-const Admin= () => {
+const Admin = () => {
   const [isAdmin, setIsAdmin] = useState(null);
 
   useEffect(() => {
@@ -22,7 +22,9 @@ const Admin= () => {
       } catch (error) {
         console.error('Error checking admin status:', error);
       }
-    };checkAdminStatus();
+    };
+
+    checkAdminStatus();
   }, []);
 
   if (isAdmin == false){
