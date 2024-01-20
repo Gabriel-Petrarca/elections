@@ -6,12 +6,13 @@ function Membership() {
   const [Memb_Candidates, setMemb_Candidates] = useState([]);
   const [optionChosen, setOptionChosen] = useState("");
   const navigate = useNavigate();
-  
+  const [userEmail, setUserEmail] = useState(""); // State to store user's email
 
   useEffect(() => {
-    fetch('/get_voting_status')
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchVotingStatus = async () => {
+      try {
+        const response = await fetch('/get_voting_status');
+        const data = await response.json();
         if (!data.voting_status.Membership) {
           // Voting for Membership is closed, redirect to the home page
           navigate('/');
@@ -19,23 +20,40 @@ function Membership() {
           // Voting is open, fetch candidates
           fetchCandidates();
         }
-      })
-      .catch((error) => console.error('Error fetching voting status:', error));
-  }, []);
+      } catch (error) {
+        console.error('Error fetching voting status:', error);
+      }
+    };
 
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/get_voter');
+        const data = await response.json();
+        if (data.user_email === null) {
+          // User is not logged in, redirect to the login page
+          navigate('/login');
+        } else {
+          setUserEmail(data.user_email);
+          fetchVotingStatus();
+        }
+      } catch (error) {
+        console.error('Error fetching user email:', error);
+      }
+    };
 
-  // Retrieves the candidates from the google sheets by using the api created in app.py
+    fetchData();
+  }, [navigate]);
+
   const fetchCandidates = () => {
     fetch('/memb_candidates')
       .then((response) => response.json())
       .then((data) => {
         console.log('Fetched candidates data:', data);
-        setMemb_Candidates(data.memb_candidates);
+        setMemb_Candidates(data.pres_candidates);
       })
       .catch((error) => console.error('Error fetching candidates:', error));
   };
 
-  // Records the vote in the google sheet
   const submitVote = async (role, voter, candidate) => {
     try {
       // Make a POST request to submit the vote
@@ -58,11 +76,10 @@ function Membership() {
     }
   };
 
-  // Format of the page
   return (
     <div className="Membership">
       <div className="vote_for_name">
-        <h1>Vote for Membership</h1>
+        <h1>Vote for President</h1>
         <div className="candidates">
           {Memb_Candidates.map((candidate, index) => (
             <button key={index} onClick={() => setOptionChosen(candidate)}>
@@ -72,7 +89,7 @@ function Membership() {
         </div>
         <button
           className="submit_vote_button"
-          onClick={() => submitVote('Membership', voter, optionChosen)}
+          onClick={() => submitVote('Membership', userEmail, optionChosen)}
         >
           Submit Vote
         </button>
