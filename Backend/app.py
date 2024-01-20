@@ -20,17 +20,17 @@ IandB_candidates_data = get_IandB_candidates()
 @cross_origin(supports_credentials=True)
 def login():
     data = request.get_json()
-    email = data.get('email')
+    email = data.get('email').capitalize()
     password = data.get('password')
 
-    if email == "osusaccos@gmail.com":
+    if email.lower() == "osusaccos@gmail.com":
         admin_password = login_info.acell('D2').value
         if password == admin_password:
             is_admin = True
-            session['user_email'] = email  # Store user email in session
+            session['user_email'] = email.lower()  # Store user email in session
             return jsonify({'redirect': '/', 'is_admin': is_admin})
     
-    elif email.capitalize() in emails and password == "SACelections":
+    elif email in emails and password == "SACelections":
         is_admin = False
         session['user_email'] = email  # Store user email in session
         return jsonify({'redirect': '/', 'is_admin': is_admin})

@@ -49,7 +49,7 @@ function Membership() {
       .then((response) => response.json())
       .then((data) => {
         console.log('Fetched candidates data:', data);
-        setMemb_Candidates(data.pres_candidates);
+        setMemb_Candidates(data.memb_candidates);
       })
       .catch((error) => console.error('Error fetching candidates:', error));
   };
