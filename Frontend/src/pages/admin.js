@@ -27,10 +27,7 @@ const Admin= () => {
     };checkAdminStatus();
   }, []);
 
-  if (isAdmin == null){
-    return <Navigate to="/"/>;
-  }
-  else if (isAdmin == false){
+  if (isAdmin == false){
     return <Navigate to="/login" />;
   }
 
