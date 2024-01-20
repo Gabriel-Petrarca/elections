@@ -3,7 +3,6 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import '../Styles/admin.css'
 
 
-
 const Admin= () => {
   const [isAdmin, setIsAdmin] = useState(null);
 

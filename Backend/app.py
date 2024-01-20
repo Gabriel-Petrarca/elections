@@ -30,7 +30,7 @@ def login():
             session['user_email'] = email  # Store user email in session
             return jsonify({'redirect': '/', 'is_admin': is_admin})
     
-    elif email in emails and password == "SACelections":
+    elif email.capitalize() in emails and password == "SACelections":
         is_admin = False
         session['user_email'] = email  # Store user email in session
         return jsonify({'redirect': '/', 'is_admin': is_admin})
