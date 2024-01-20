@@ -6,12 +6,13 @@ function President() {
   const [Pres_Candidates, setPres_Candidates] = useState([]);
   const [optionChosen, setOptionChosen] = useState("");
   const navigate = useNavigate();
-  
+  const [userEmail, setUserEmail] = useState(""); // State to store user's email
 
   useEffect(() => {
-    fetch('/get_voting_status')
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchVotingStatus = async () => {
+      try {
+        const response = await fetch('/get_voting_status');
+        const data = await response.json();
         if (!data.voting_status.President) {
           // Voting for President is closed, redirect to the home page
           navigate('/');
@@ -19,10 +20,29 @@ function President() {
           // Voting is open, fetch candidates
           fetchCandidates();
         }
-      })
-      .catch((error) => console.error('Error fetching voting status:', error));
-  }, []);
+      } catch (error) {
+        console.error('Error fetching voting status:', error);
+      }
+    };
 
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/get_voter');
+        const data = await response.json();
+        if (data.user_email === null) {
+          // User is not logged in, redirect to the login page
+          navigate('/login');
+        } else {
+          setUserEmail(data.user_email);
+          fetchVotingStatus();
+        }
+      } catch (error) {
+        console.error('Error fetching user email:', error);
+      }
+    };
+
+    fetchData();
+  }, [navigate]);
 
   const fetchCandidates = () => {
     fetch('/pres_candidates')
@@ -69,7 +89,7 @@ function President() {
         </div>
         <button
           className="submit_vote_button"
-          onClick={() => submitVote('President', 'Petrarca.26@buckeyemail.osu.edu', optionChosen)}
+          onClick={() => submitVote('President', userEmail, optionChosen)}
         >
           Submit Vote
         </button>

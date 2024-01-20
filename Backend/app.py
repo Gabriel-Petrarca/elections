@@ -1,6 +1,6 @@
 from flask import Flask, render_template, session, request, redirect, url_for, jsonify
 from flask_cors import CORS, cross_origin
-from google_sheet import emails, record_vote, get_pres_candidates, voters_map, get_AO_candidates, get_Finance_candidates, get_IandB_candidates, get_MC_candidates, get_memb_candidates, get_SE_candidates, login_info, add_vote
+from google_sheet import emails, record_vote, get_pres_candidates, voters_map, get_AO_candidates, get_Finance_candidates, get_IandB_candidates, get_MC_candidates, get_memb_candidates, get_SE_candidates, login_info, add_vote, role_col
 
 app = Flask(__name__, template_folder='../../frontend/src')
 CORS(app, supports_credentials=True)
@@ -52,6 +52,13 @@ def check_admin_status():
     print(f"UserEmail : {user_email}, Is Admin: {is_admin}")
     return jsonify({'user_email': user_email, 'is_admin': is_admin})
 
+@app.route('/get_voter')
+@cross_origin(supports_credentials=True)
+def get_voter():
+    user_email = session.get('user_email')
+    print(f"UserEmail : {user_email}")
+    return jsonify({'user_email': user_email})
+
 @app.route('/get_voting_status')
 @cross_origin(supports_credentials=True)
 def getJsonVoteStatus():
@@ -65,17 +72,21 @@ def handle_submit_vote():
     voter = data.get('voter')
     candidate = data.get('candidate')
     
-    if role and voter and candidate and voter not in voters_map:
+    if role and voter and candidate:
+        add_vote(voter, candidate)
         if len(voters_map) >= 3:
             record_vote()
-        add_vote(voter, candidate)
-        return jsonify({'success': True})
+            return jsonify({'success': True})
+        else:
+            return jsonify({'message': 'Vote recorded, but not yet enough votes to finalize'}), 200
     else:
         return jsonify({'error': 'Invalid data'}), 400
+
 
 @app.route('/open_vote')
 @cross_origin(supports_credentials=True)
 def open_vote(user, role):
+    role_col += 1
     if user.lower() == "osusaccos@gmail.com":
         if role == "President":
             pres_candidate_data = get_pres_candidates()

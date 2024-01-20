@@ -21,7 +21,7 @@ candidates = sheet.get_worksheet(1)
 emails = login_info.col_values(3)
 headers = login_info.row_values(1)
 
-role_col = 5
+role_col = 4
 cell_list = []
 voters_map = {}
 
@@ -29,10 +29,9 @@ voters_map = {}
 def add_vote(voter, candidate):
     voters_map[voter] = candidate
 def record_vote():
-    for voter, candidate in voters_map:
+    for voter, candidate in voters_map.items():
         row_index = login_info.col_values(3).index(voter) + 1  
         cell_list.append(Cell(row_index, role_col, candidate))
-    role_col = role_col + 1
     login_info.update_cells(cell_list)
     voters_map.clear()
 
