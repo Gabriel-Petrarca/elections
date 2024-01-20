@@ -79,7 +79,7 @@ function Membership() {
   return (
     <div className="Membership">
       <div className="vote_for_name">
-        <h1>Vote for President</h1>
+        <h1>Vote for Membership</h1>
         <div className="candidates">
           {Memb_Candidates.map((candidate, index) => (
             <button key={index} onClick={() => setOptionChosen(candidate)}>

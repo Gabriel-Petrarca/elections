@@ -7,7 +7,7 @@ CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = "coolWebsite"
 app.config['SESSION_TYPE'] = 'filesystem'
 
-voting_status = {'President' : True, 'Membership' : False, 'AO' : False, 'SE' : False, 'Marketing' : False, 'Finance' : False, 'I&B' : False}
+voting_status = {'President' : True, 'Membership' : True, 'AO' : False, 'SE' : False, 'Marketing' : False, 'Finance' : False, 'I&B' : False}
 pres_candidate_data = get_pres_candidates()
 memb_candidates_data = get_memb_candidates()
 AO_candidates_data = get_AO_candidates()
