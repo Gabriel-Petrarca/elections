@@ -6,7 +6,6 @@ import '../Styles/admin.css'
 
 const Admin= () => {
   const [isAdmin, setIsAdmin] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAdminStatus = async () => {

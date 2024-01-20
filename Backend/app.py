@@ -42,7 +42,7 @@ def login():
 @cross_origin(supports_credentials=True)
 def logout():
     session.pop('user_email', None)
-    return redirect(url_for('index'))
+    return jsonify({'message': 'Logout successful'}), 200
 
 @app.route('/check_admin_status')
 @cross_origin(supports_credentials=True)

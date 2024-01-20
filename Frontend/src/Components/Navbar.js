@@ -18,9 +18,23 @@ function Navbar() {
         setOpenLinks(!openLinks)
     };
 
-    function logout(){
-      navigate('/login');
-    }
+    const logout = async () => {
+      try {
+        const response = await fetch('/logout', {
+          method: 'GET',
+          credentials: 'include', // Include credentials in the request
+        });
+  
+        if (response.ok) {
+          // Logout was successful
+          navigate('/login'); // Redirect to the login page
+        } else {
+          console.error('Error logging out');
+        }
+      } catch (error) {
+        console.error('Error logging out:', error);
+      }
+    };
 
     /* handles the resize of the window when it goes back and forth between small and large screen */
     useEffect(() => {
