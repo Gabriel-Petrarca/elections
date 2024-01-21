@@ -7,10 +7,10 @@ CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = "coolWebsite"
 app.config['SESSION_TYPE'] = 'filesystem'
 
-voting_status = {'President' : True, 'Membership' : True, 'AO' : False, 'SE' : False, 'Marketing' : False, 'Finance' : False, 'I&B' : False}
+voting_status = {'President' : False, 'Membership' : False, 'AO' : False, 'SE' : False, 'Marketing' : False, 'Finance' : False, 'I&B' : False}
 pres_candidate_data = get_pres_candidates()
 memb_candidates_data = get_memb_candidates()
-AO_candidates_data = get_AO_candidates()
+AO_candidates_data = get_AO_candidates() 
 SE_candidates_data = get_SE_candidates()
 MC_candidates_data = get_MC_candidates
 finance_candidates_data = get_Finance_candidates()
@@ -87,14 +87,14 @@ def handle_submit_vote():
 @cross_origin(supports_credentials=True)
 def open_vote(role):
     global role_col
+    global pres_candidate_data, memb_candidates_data, AO_candidates_data, SE_candidates_data, MC_candidates_data, finance_candidates_data, IandB_candidates_data 
     role_col = role_col + 1
-    candidates_data = None
 
     if role == "President":
-        pres_candidates_data = get_pres_candidates()
+        pres_candidate_data = get_pres_candidates()
         voting_status[role] = True
         voters_map.clear()
-        return jsonify({"status": "success", "message": f"Vote for {role} opened successfully", "candidates": pres_candidates_data})
+        return jsonify({"status": "success", "message": f"Vote for {role} opened successfully", "candidates": pres_candidate_data})
     elif role == "Membership":
         memb_candidates_data = get_memb_candidates()
         voting_status[role] = True
@@ -138,6 +138,7 @@ def close_vote(role):
 @app.route('/pres_candidates')
 @cross_origin(supports_credentials=True)
 def pres_candidates():
+    global pres_candidate_data
     # Fetch candidate information and return as JSON
     return jsonify({'pres_candidates': pres_candidate_data})
 
