@@ -13,7 +13,7 @@ function Marketing() {
       try {
         const response = await fetch('/get_voting_status');
         const data = await response.json();
-        if (!data.voting_status.MC_Candidatesident) {
+        if (!data.voting_status.MC) {
           // Voting for Membership is closed, redirect to the home page
           navigate('/');
         } else {
