@@ -1,8 +1,9 @@
 from flask import Flask, render_template, session, request, redirect, url_for, jsonify
+from flask.helpers import send_from_directory
 from flask_cors import CORS, cross_origin
 from google_sheet import emails, record_vote, get_pres_candidates, voters_map, get_AO_candidates, get_Finance_candidates, get_IandB_candidates, get_MC_candidates, get_memb_candidates, get_SE_candidates, login_info, add_vote, role_col
 
-app = Flask(__name__, template_folder='../../frontend/src')
+app = Flask(__name__, static_folder='./Frontend/build', static_url_path='')
 CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = "coolWebsite"
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -177,5 +178,10 @@ def finance_candidates():
 def IandB_candidates():
     # Fetch candidate information and return as JSON
     return jsonify({'IandB_candidates': IandB_candidates_data})
+
+@app.route('/')
+@cross_origin(supports_credentials=True)
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=5000)
+    app.run(host='localhost', port=5000)
