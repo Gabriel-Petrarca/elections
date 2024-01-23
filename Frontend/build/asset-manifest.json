@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0aeaa06c.css",
+    "main.js": "/static/js/main.b22f6942.js",
+    "static/js/787.38f16daf.chunk.js": "/static/js/787.38f16daf.chunk.js",
+    "static/media/SACBackground.png": "/static/media/SACBackground.be2a14554cea2b79ede7.png",
+    "static/media/SAClogowhite.png": "/static/media/SAClogowhite.9999eb1fdbf2b611d580.png",
+    "index.html": "/index.html",
+    "main.0aeaa06c.css.map": "/static/css/main.0aeaa06c.css.map",
+    "main.b22f6942.js.map": "/static/js/main.b22f6942.js.map",
+    "787.38f16daf.chunk.js.map": "/static/js/787.38f16daf.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0aeaa06c.css",
+    "static/js/main.b22f6942.js"
+  ]
+}
