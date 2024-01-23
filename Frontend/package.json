@@ -2,7 +2,11 @@
   "name": "my-react-app",
   "version": "0.1.0",
   "private": true,
+<<<<<<< Updated upstream
   "proxy": "localhost:5000",
+=======
+  "proxy": "https://afternoon-gorge-19047-944063aa972f.herokuapp.com/",
+>>>>>>> Stashed changes
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
