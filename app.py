@@ -26,6 +26,7 @@ def login():
     password = data.get('password')
 
     if email.lower() == "osusaccos@gmail.com":
+        # this is how to do other votes logic as well
         admin_password = login_info.acell('D2').value
         if password == admin_password:
             is_admin = True
@@ -43,6 +44,8 @@ def login():
 @app.route('/logout')
 @cross_origin(supports_credentials=True)
 def logout():
+    # before popping the user we want to get the data (who logged out)
+    #voter = data.get('voter')
     session.pop('user_email', None)
     return jsonify({'message': 'Logout successful'}), 200
 
