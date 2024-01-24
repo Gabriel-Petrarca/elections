@@ -20,6 +20,28 @@ IandB_candidates_data = get_IandB_candidates()
 othervote_prompt_data = get_othervote_prompt()
 othervote_options_data = get_othervote_options()
 
+
+# Function to add no-cache headers
+def add_no_cache_headers(response):
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
+@app.after_request
+def apply_no_cache(response):
+    no_cache_routes = [
+        'no_cache', 'get_voter',
+        'getJsonVoteStatus', 'handle_submit_vote', 'open_vote', 'close_vote',
+        'pres_candidates', 'memb_candidates', 'AO_candidates', 'SE_candidates',
+        'MC_candidates', 'finance_candidates', 'IandB_candidates', 'othervote_prompt',
+        'othervote_options', 'open_vote', 'close_vote'
+    ]
+
+    if request.endpoint in no_cache_routes:
+        return add_no_cache_headers(response)
+    return response
+
 @app.route('/login', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def login():

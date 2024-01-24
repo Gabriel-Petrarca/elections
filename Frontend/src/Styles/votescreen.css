@@ -69,7 +69,7 @@ button:hover {
   color: white;
 }
 
-.vote_for_name button:focus {
+.vote_for_name button:active {
   background-color: rgb(244, 235, 163);
   color: #121619;
 }
@@ -126,7 +126,7 @@ button:hover {
     background-color: black; /* Darken the background color on hover */
   }
 
-  .vote_for_name button:focus {
+  .vote_for_name button:active {
     background-color: rgb(244, 235, 163);
     color: #121619;
   }
