@@ -23,7 +23,7 @@
     font-family: 'Times New Roman', Times, serif;
 }
 
-.admin_pres, .admin_mem, .admin_ao,.admin_se, .admin_mc, .admin_finance, .admin_ib {
+.admin_pres, .admin_mem, .admin_ao,.admin_se, .admin_mc, .admin_finance, .admin_ib, .admin_othervote {
   border: 2px solid red; 
   border-radius: 8px; 
   margin: 15px; 

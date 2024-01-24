@@ -10,50 +10,71 @@ import '../Styles/Navbar.css'
 /* includes the log out button that redirects users back to the login page */
 
 function Navbar() {
-
-    const [openLinks, setOpenLinks] = useState(false)
+    const [openLinks, setOpenLinks] = useState(false);
+    const [userEmail, setUserEmail] = useState("");
     const navigate = useNavigate();
 
-    const toggleNavbar = () =>{
-        setOpenLinks(!openLinks)
+    const toggleNavbar = () => {
+        setOpenLinks(!openLinks);
     };
 
     const logout = async () => {
-      try {
-        const response = await fetch('/logout', {
-          method: 'GET',
-          credentials: 'include', // Include credentials in the request
-        });
-  
-        if (response.ok) {
-          // Logout was successful
-          navigate('/login'); // Redirect to the login page
-        } else {
-          console.error('Error logging out');
+        try {
+            const response = await fetch('/logout', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: userEmail }),
+            });
+
+            if (response.ok) {
+                // Logout was successful
+                navigate('/login');
+            } else {
+                console.error('Error logging out');
+            }
+        } catch (error) {
+            console.error('Error logging out:', error);
         }
-      } catch (error) {
-        console.error('Error logging out:', error);
-      }
     };
 
     /* handles the resize of the window when it goes back and forth between small and large screen */
     useEffect(() => {
-      const handleResize = () => {
-        const screenWidth = window.innerWidth;
-        if (screenWidth > 600) {
-          setOpenLinks(false);
-        }
-      };
-      
-      window.addEventListener('resize', handleResize);
-      
-      handleResize();
-  
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }, []);
+        const handleResize = () => {
+            const screenWidth = window.innerWidth;
+            if (screenWidth > 600) {
+                setOpenLinks(false);
+            }
+        };
 
+        const fetchData = async () => {
+            try {
+                const response = await fetch('/get_user_email', {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserEmail(data.user_email);
+                } else {
+                    console.error('Error fetching user email');
+                }
+            } catch (error) {
+                console.error('Error fetching user email:', error);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        fetchData(); // Fetch user email when component mounts
+        handleResize();
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
     /* creates the links and the logo that appear at the top of the different size screens */
   return (
     <div className="navbar">

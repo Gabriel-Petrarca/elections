@@ -4,7 +4,7 @@ import '../Styles/votescreen.css';
 
 /*Treating candidates as options in this case*/
 
-function othervote() {
+function Othervote() {
   const [Othervote_Prompt, setOthervote_Prompt] = useState([]);
   const [Othervote_Options, setOthervote_Options] = useState([]);
   const [optionChosen, setOptionChosen] = useState("");
@@ -16,12 +16,13 @@ function othervote() {
       try {
         const response = await fetch('/get_voting_status');
         const data = await response.json();
-        if (!data.voting_status.othervote) {
+        if (!data.voting_status.Othervote) {
           // Voting for othervote is closed, redirect to the home page
           navigate('/');
         } else {
           // Voting is open, fetch candidates
             fetchCandidates();
+            fetchPrompt();
         }
       } catch (error) {
         console.error('Error fetching voting status:', error);
@@ -56,6 +57,16 @@ function othervote() {
       })
       .catch((error) => console.error('Error fetching candidates:', error));
   };
+  const fetchPrompt = () => {
+    fetch('/othervote_prompt')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Fetched prompt data:', data);
+        setOthervote_Prompt(data.othervote_prompt);
+      })
+      .catch((error) => console.error('Error fetching candidates:', error));
+  };
+
 
   const submitVote = async (role, voter, candidate) => {
     try {
@@ -104,4 +115,4 @@ function othervote() {
   );
 }
 
-export default othervote;
+export default Othervote;

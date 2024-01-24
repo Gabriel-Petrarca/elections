@@ -28,7 +28,7 @@ voters_map = {}
 # the try and except function makes sure that the program doesnt crash if for some reason the voter who logs out isnt in column 3
 def user_logout(voter_email):
     try:
-        row_index = emails.index(voter_email)+1 
+        row_index = emails.index(voter_email) + 1 
     
         # Get the email from column 3
         email_to_move = login_info.cell(row_index, 3).value
@@ -41,7 +41,7 @@ def user_logout(voter_email):
         
         return {'status': 'success', 'message': f'Email moved from column 3 to column 4 for user: {voter_email}'}
     except ValueError:
-        return {'status': 'error', 'message': f'User not found: {voter_email}'}
+        return {'status': 'error', 'message': voter_email}
 
 
 
@@ -80,7 +80,7 @@ def get_IandB_candidates():
     return candidates_data
 #get the data for the other votes variables
 def get_othervote_prompt():
-    prompt_data = candidates.col_values(8)(1)
+    prompt_data = candidates.col_values(8)[1]
     return prompt_data
 def get_othervote_options():
     options_data = candidates.col_values(8)[2:10]

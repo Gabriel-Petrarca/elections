@@ -11,6 +11,7 @@ import Home from './pages/home';
 import Thanks from './pages/thanksforvoting';
 import Login from './pages/login';
 import Admin from './pages/admin';
+import Othervote from './pages/othervote';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route exact path="/thanksforvoting" element={<Thanks />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/admin" element={<Admin />} />
+          <Route exact path="/othervote" element={<Othervote />} />
         </Routes>
       </Router>
     </div>

@@ -9,7 +9,7 @@ CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = "coolWebsite"
 app.config['SESSION_TYPE'] = 'filesystem'
 
-voting_status = {'President' : False, 'Membership' : False, 'AO' : False, 'SE' : False, 'Marketing' : False, 'Finance' : False, 'I&B' : False}
+voting_status = {'President' : False, 'Membership' : False, 'AO' : False, 'SE' : False, 'Marketing' : False, 'Finance' : False, 'I&B' : False, 'Othervote' : False}
 pres_candidate_data = get_pres_candidates()
 memb_candidates_data = get_memb_candidates()
 AO_candidates_data = get_AO_candidates() 
@@ -43,18 +43,17 @@ def login():
         is_admin = False
         return jsonify({'error': 'Invalid credentials', 'is_admin': is_admin}), 401
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def logout():
     # before popping the user we want to get the data (who logged out) this may be wrong
-    data = request.json
-    voter_email = data.get('voter')
-    result = user_logout(voter_email)
+    user_email = session.get('user_email')
+    result = user_logout(user_email)
 
     if result['status'] == 'success':
         session.pop('user_email', None)
 
-    return jsonify(result), 200
+    return jsonify({'user logged out' : user_email}), 200
 
 
 @app.route('/check_admin_status')
@@ -137,7 +136,7 @@ def open_vote(role):
         voting_status[role] = True
         voters_map.clear()
         return jsonify({"status": "success", "message": f"Vote for {role} opened successfully", "candidates": IandB_candidates_data})
-    elif role == "othervote":
+    elif role == "Othervote":
         othervote_prompt_data = get_othervote_prompt()
         othervote_options_data = get_othervote_options()
         voting_status[role] = True
@@ -207,8 +206,6 @@ def othervote_prompt():
 @cross_origin(supports_credentials=True)
 def othervote_options():
     return jsonify({'othervote_options': othervote_options_data})
-
-
 
 @app.route('/')
 @cross_origin(supports_credentials=True)

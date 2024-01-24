@@ -94,6 +94,11 @@ const Admin = () => {
             <button onClick={() => handleVoteAction('open', 'IandB')}>Open Inclusion and Belonging Vote</button>
             <button onClick={() => handleVoteAction('close', 'IandB')}>Close Inclusion and Belonging Vote</button>
         </div>
+        <div className = 'admin_othervote'>
+            <h1>Other Vote</h1>
+            <button onClick={() => handleVoteAction('open', 'Othervote')}>Open Other Vote</button>
+            <button onClick={() => handleVoteAction('close', 'Othervote')}>Close Other Vote</button>
+        </div>
     </div>
   )
 }
