@@ -2,7 +2,7 @@ from flask import Flask, render_template, session, request, redirect, url_for, j
 from flask.helpers import send_from_directory
 from flask_cors import CORS, cross_origin
 from config import current_col
-from google_sheet import emails, record_vote, get_pres_candidates, voters_map, get_AO_candidates, get_Finance_candidates, get_IandB_candidates, get_MC_candidates, get_memb_candidates, get_SE_candidates, login_info, add_vote
+from google_sheet import emails, user_logout, record_vote, get_pres_candidates, voters_map, get_AO_candidates, get_Finance_candidates, get_IandB_candidates, get_MC_candidates, get_memb_candidates, get_SE_candidates, login_info, add_vote, get_othervote_options, get_othervote_prompt
 
 app = Flask(__name__, static_folder='Frontend/build', static_url_path='')
 CORS(app, supports_credentials=True)
@@ -17,6 +17,8 @@ SE_candidates_data = get_SE_candidates()
 MC_candidates_data = get_MC_candidates
 finance_candidates_data = get_Finance_candidates()
 IandB_candidates_data = get_IandB_candidates()
+othervote_prompt_data = get_othervote_prompt()
+othervote_options_data = get_othervote_options()
 
 @app.route('/login', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -44,10 +46,16 @@ def login():
 @app.route('/logout')
 @cross_origin(supports_credentials=True)
 def logout():
-    # before popping the user we want to get the data (who logged out)
-    #voter = data.get('voter')
-    session.pop('user_email', None)
-    return jsonify({'message': 'Logout successful'}), 200
+    # before popping the user we want to get the data (who logged out) this may be wrong
+    data = request.json
+    voter_email = data.get('voter')
+    result = user_logout(voter_email)
+
+    if result['status'] == 'success':
+        session.pop('user_email', None)
+
+    return jsonify(result), 200
+
 
 @app.route('/check_admin_status')
 @cross_origin(supports_credentials=True)
@@ -129,6 +137,12 @@ def open_vote(role):
         voting_status[role] = True
         voters_map.clear()
         return jsonify({"status": "success", "message": f"Vote for {role} opened successfully", "candidates": IandB_candidates_data})
+    elif role == "othervote":
+        othervote_prompt_data = get_othervote_prompt()
+        othervote_options_data = get_othervote_options()
+        voting_status[role] = True
+        voters_map.clear()
+        return jsonify({"status": "success", "message": f"Vote for {role} opened successfully", "prompt": othervote_prompt_data, "options": othervote_options_data})
     
     
     return jsonify({"status": "success", "message": f"Vote for {role} opened successfully"})
@@ -181,6 +195,19 @@ def finance_candidates():
 def IandB_candidates():
     # Fetch candidate information and return as JSON
     return jsonify({'IandB_candidates': IandB_candidates_data})
+
+
+# api created for othervotes prompt and options
+@app.route('/othervote_prompt')
+@cross_origin(supports_credentials=True)
+def othervote_prompt():
+    return jsonify({'othervote_prompt': othervote_prompt_data})
+
+@app.route('/othervote_options')
+@cross_origin(supports_credentials=True)
+def othervote_options():
+    return jsonify({'othervote_options': othervote_options_data})
+
 
 
 @app.route('/')

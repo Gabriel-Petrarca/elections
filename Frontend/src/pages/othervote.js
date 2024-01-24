@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Styles/votescreen.css';
 
-function President() {
-  const [Pres_Candidates, setPres_Candidates] = useState([]);
+/*Treating candidates as options in this case*/
+
+function othervote() {
+  const [Othervote_Prompt, setOthervote_Prompt] = useState([]);
+  const [Othervote_Options, setOthervote_Options] = useState([]);
   const [optionChosen, setOptionChosen] = useState("");
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState(""); // State to store user's email
@@ -13,8 +16,8 @@ function President() {
       try {
         const response = await fetch('/get_voting_status');
         const data = await response.json();
-        if (!data.voting_status.President) {
-          // Voting for President is closed, redirect to the home page
+        if (!data.voting_status.othervote) {
+          // Voting for othervote is closed, redirect to the home page
           navigate('/');
         } else {
           // Voting is open, fetch candidates
@@ -45,11 +48,11 @@ function President() {
   }, [navigate]);
 
   const fetchCandidates = () => {
-    fetch('/pres_candidates')
+    fetch('/othervote_options')
       .then((response) => response.json())
       .then((data) => {
         console.log('Fetched candidates data:', data);
-        setPres_Candidates(data.pres_candidates);
+        setOthervote_Options(data.othervote_options);
       })
       .catch((error) => console.error('Error fetching candidates:', error));
   };
@@ -77,11 +80,11 @@ function President() {
   };
 
   return (
-    <div className="President">
+    <div className="Othervote">
       <div className="vote_for_name">
-        <h1>Vote for President</h1>
+        <h1>{Othervote_Prompt}</h1>
         <div className="candidates">
-          {Pres_Candidates.map((candidate, index) => (
+          {Othervote_Options.map((candidate, index) => (
             <button key={index} 
             onClick={() => setOptionChosen(candidate)}
             onTouchStart={() => setOptionChosen(candidate)}>
@@ -91,8 +94,8 @@ function President() {
         </div>
         <button
           className="submit_vote_button"
-          onClick={() => submitVote('President', userEmail, optionChosen)}
-          onTouchStart={() => submitVote('President', userEmail, optionChosen)}
+          onClick={() => submitVote('othervote', userEmail, optionChosen)}
+          onTouchStart={() => submitVote('othervote', userEmail, optionChosen)}
         >
           Submit Vote
         </button>
@@ -101,4 +104,4 @@ function President() {
   );
 }
 
-export default President;
+export default othervote;

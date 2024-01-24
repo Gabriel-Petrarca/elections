@@ -60,7 +60,6 @@ function Navbar() {
       <div className="leftSide" id={openLinks ? "open" : "close"}>
         <img src={SAClogo} />
         <div className="hiddenLinks">
-            <Link to="/"> Home </Link>
             <Link to="/president"> President </Link>
             <Link to="/membership"> Membership </Link>
             <Link to="/ao"> AO </Link>
@@ -68,7 +67,7 @@ function Navbar() {
             <Link to="/marketing"> Marketing </Link>
             <Link to="/finance"> Finance </Link>
             <Link to="/i&b"> I&B </Link>
-            <Link to="/admin">Admin</Link>
+            <Link to="/othervote"> Other Votes </Link>
             
         </div>
       </div>
@@ -81,6 +80,7 @@ function Navbar() {
         <Link to="/marketing"> Marketing </Link>
         <Link to="/finance"> Finance </Link>
         <Link to="/i&b"> I&B </Link>
+        <Link to="/othervote"> Other Votes </Link>
         <Link to="/admin">Admin</Link>
         <button onClick={toggleNavbar}>
           <ReorderIcon />
