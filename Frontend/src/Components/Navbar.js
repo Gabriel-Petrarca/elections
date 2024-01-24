@@ -68,6 +68,7 @@ function Navbar() {
             <Link to="/marketing"> Marketing </Link>
             <Link to="/finance"> Finance </Link>
             <Link to="/i&b"> I&B </Link>
+            <Link to="/admin">Admin</Link>
             
         </div>
       </div>
@@ -80,6 +81,7 @@ function Navbar() {
         <Link to="/marketing"> Marketing </Link>
         <Link to="/finance"> Finance </Link>
         <Link to="/i&b"> I&B </Link>
+        <Link to="/admin">Admin</Link>
         <button onClick={toggleNavbar}>
           <ReorderIcon />
         </button>

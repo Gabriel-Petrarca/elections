@@ -1,8 +1,10 @@
 from flask import Flask, render_template, session, request, redirect, url_for, jsonify
+from flask.helpers import send_from_directory
 from flask_cors import CORS, cross_origin
-from google_sheet import emails, record_vote, get_pres_candidates, voters_map, get_AO_candidates, get_Finance_candidates, get_IandB_candidates, get_MC_candidates, get_memb_candidates, get_SE_candidates, login_info, add_vote, role_col
+from config import current_col
+from google_sheet import emails, record_vote, get_pres_candidates, voters_map, get_AO_candidates, get_Finance_candidates, get_IandB_candidates, get_MC_candidates, get_memb_candidates, get_SE_candidates, login_info, add_vote
 
-app = Flask(__name__, template_folder='../../frontend/src')
+app = Flask(__name__, static_folder='Frontend/build', static_url_path='')
 CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = "coolWebsite"
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -24,6 +26,7 @@ def login():
     password = data.get('password')
 
     if email.lower() == "osusaccos@gmail.com":
+        # this is how to do other votes logic as well
         admin_password = login_info.acell('D2').value
         if password == admin_password:
             is_admin = True
@@ -41,6 +44,8 @@ def login():
 @app.route('/logout')
 @cross_origin(supports_credentials=True)
 def logout():
+    # before popping the user we want to get the data (who logged out)
+    #voter = data.get('voter')
     session.pop('user_email', None)
     return jsonify({'message': 'Logout successful'}), 200
 
@@ -67,6 +72,7 @@ def getJsonVoteStatus():
 @app.route('/submit_vote', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def handle_submit_vote():
+    global current_col
     data = request.json
     role = data.get('role')
     voter = data.get('voter')
@@ -75,8 +81,8 @@ def handle_submit_vote():
     if role and voter and candidate:
         add_vote(voter, candidate)
         if len(voters_map) >= 3:
-            record_vote()
-            return jsonify({'success': True})
+            record_vote(current_col)
+            return jsonify({'success': True, "col" : current_col})
         else:
             return jsonify({'message': 'Vote recorded, but not yet enough votes to finalize'}), 200
     else:
@@ -86,10 +92,8 @@ def handle_submit_vote():
 @app.route('/open_vote/<role>')
 @cross_origin(supports_credentials=True)
 def open_vote(role):
-    global role_col
-    global pres_candidate_data, memb_candidates_data, AO_candidates_data, SE_candidates_data, MC_candidates_data, finance_candidates_data, IandB_candidates_data 
-    role_col = role_col + 1
-
+    global pres_candidate_data, memb_candidates_data, AO_candidates_data, SE_candidates_data, MC_candidates_data, finance_candidates_data, IandB_candidates_data, current_col
+    current_col += 1
     if role == "President":
         pres_candidate_data = get_pres_candidates()
         voting_status[role] = True
@@ -177,5 +181,22 @@ def finance_candidates():
 def IandB_candidates():
     # Fetch candidate information and return as JSON
     return jsonify({'IandB_candidates': IandB_candidates_data})
+
+
+@app.route('/')
+@cross_origin(supports_credentials=True)
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return app.send_static_file('index.html')
+
+@app.errorhandler(404)   
+def not_found(e):   
+  return app.send_static_file('index.html')
+
+
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=5000)
+    app.run(host='localhost', port=5000)

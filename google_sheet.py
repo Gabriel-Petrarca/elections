@@ -6,7 +6,7 @@ from gspread import Cell
 # Authenticate Google API credentials. Create the spreadsheet and share it with necessary users
 scope = ['https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive"]
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name('/home/gabriel/elections/Backend/gs-credentials.json', scope)
+credentials = ServiceAccountCredentials.from_json_keyfile_name('gs-credentials.json', scope)
 client = gspread.authorize(credentials)
 
 #sheet = client.create("SAC Elections")
@@ -21,17 +21,17 @@ candidates = sheet.get_worksheet(1)
 emails = login_info.col_values(3)
 headers = login_info.row_values(1)
 
-role_col = 4
 cell_list = []
 voters_map = {}
 
-
+# make function user_logout where it would take the voter index to find the row and then move email from column 3 to column 4
 def add_vote(voter, candidate):
     voters_map[voter] = candidate
-def record_vote():
+def record_vote(col):
     for voter, candidate in voters_map.items():
+        # every voter is mapped to the candidate they voted for. Row index = voter
         row_index = login_info.col_values(3).index(voter) + 1  
-        cell_list.append(Cell(row_index, role_col, candidate))
+        cell_list.append(Cell(row_index, col, candidate))
     login_info.update_cells(cell_list)
     voters_map.clear()
 
