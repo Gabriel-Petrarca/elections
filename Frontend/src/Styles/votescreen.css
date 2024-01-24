@@ -1,9 +1,7 @@
-
 button:hover {
   cursor: pointer;
 }
 
-/* This is the background below the header */
 .President,
 .vote_for_name {
   width: 100%;
@@ -16,18 +14,17 @@ button:hover {
   align-items: center;
 }
 
-/* This is the red box with the candidates' names */
 .candidates {
-    width: 500px;
-    height: 500px;
-    border-radius: 10px;
-    background-color: rgb(190, 50, 50);
-    background-color: #ce1c0f;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
+  width: 500px;
+  height: 500px;
+  border-radius: 10px;
+  background-color: rgb(190, 50, 50);
+  background-color: #ce1c0f;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .vote_for_name .submit_vote_button {
@@ -56,6 +53,7 @@ button:hover {
   background-color: #e1dada;
   color: black;
   font-size: 20px;
+  outline: none; /* Remove default focus outline */
 }
 
 .vote_for_name h1 {
@@ -69,12 +67,12 @@ button:hover {
   color: white;
 }
 
-.vote_for_name button:active {
+.vote_for_name button:active,
+.vote_for_name button:focus {
   background-color: rgb(244, 235, 163);
   color: #121619;
 }
 
-/* Media queries for responsiveness */
 @media only screen and (max-width: 768px) {
   .candidates {
     width: 80%;
@@ -88,8 +86,8 @@ button:hover {
     justify-content: center;
     align-items: center;
     color: white;
-}
-  .vote_for_name{
+  }
+  .vote_for_name {
     width: 80%; /* Adjusted width to be responsive */
     max-width: 500px; /* Set a maximum width for smaller screens */
     height: 100%; /* Adjusted height to be responsive */
@@ -101,13 +99,13 @@ button:hover {
     align-items: center;
     color: white;
   }
-  
+
   .vote_for_name h1 {
     font-size: 8vw; /* Adjusted font size for smaller screens */
     height: 30px;
     color: black;
   }
- 
+
   .vote_for_name button {
     margin: 20px;
     margin-bottom: 20px;
@@ -121,12 +119,13 @@ button:hover {
     font-size: 20px;
     cursor: pointer;
   }
-  
+
   .vote_for_name button:hover {
     background-color: black; /* Darken the background color on hover */
   }
 
-  .vote_for_name button:active {
+  .vote_for_name button:active,
+  .vote_for_name button:focus {
     background-color: rgb(244, 235, 163);
     color: #121619;
   }

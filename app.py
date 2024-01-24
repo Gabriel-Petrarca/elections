@@ -172,7 +172,9 @@ def open_vote(role):
 @app.route('/close_vote/<role>')
 @cross_origin(supports_credentials=True)
 def close_vote(role):
+    global current_col
     voting_status[role] = False
+    record_vote(current_col)
     return jsonify({"status": "success", "message": f"Vote for {role} closed successfully"})
 
 @app.route('/pres_candidates')

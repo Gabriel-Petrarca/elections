@@ -106,9 +106,8 @@ function Navbar() {
         <button onClick={toggleNavbar}>
           <ReorderIcon />
         </button>
-      {openLinks && (
-      <button onClick={logout}>Log Out</button>)}
       </div>
+      <button onClick={logout}>Log Out</button>
     </div>
   )
 }
