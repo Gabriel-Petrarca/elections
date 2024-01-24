@@ -11,7 +11,14 @@ function President() {
   useEffect(() => {
     const fetchVotingStatus = async () => {
       try {
-        const response = await fetch('/get_voting_status');
+        const response = await fetch('/get_voting_status', {
+          method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+          },
+        })
         const data = await response.json();
         if (!data.voting_status.President) {
           // Voting for President is closed, redirect to the home page
