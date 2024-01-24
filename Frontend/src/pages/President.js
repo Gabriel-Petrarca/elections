@@ -18,7 +18,7 @@ function President() {
           navigate('/');
         } else {
           // Voting is open, fetch candidates
-          fetchCandidates();
+            fetchCandidates();
         }
       } catch (error) {
         console.error('Error fetching voting status:', error);
