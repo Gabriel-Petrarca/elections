@@ -12,7 +12,7 @@ function AlumniOutreach() {
   useEffect(() => {
     const fetchVotingStatus = async () => {
       try {
-        const response = await fetch('/get_voting_status?_t=${timestamp}');
+        const response = await fetch(`/get_voting_status?_t=${timestamp}`);
         const data = await response.json();
         if (!data.voting_status.AO) {
           // Voting for Alumni Outreach is closed, redirect to the home page
@@ -46,7 +46,7 @@ function AlumniOutreach() {
   }, [navigate]);
 
   const fetchCandidates = () => {
-    fetch('/AO_candidates?_t=${timestamp}')
+    fetch(`/AO_candidates?_t=${timestamp}`)
       .then((response) => response.json())
       .then((data) => {
         console.log('Fetched candidates data:', data);

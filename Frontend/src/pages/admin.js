@@ -9,7 +9,7 @@ const Admin = () => {
   useEffect(() => {
     const checkAdminStatus = async () => {
       try {
-        const response = await fetch('/check_admin_status?_t=${timestamp}', {
+        const response = await fetch(`/check_admin_status?_t=${timestamp}`, {
           credentials: 'include',
         });
 

@@ -15,7 +15,7 @@ function Othervote() {
   useEffect(() => {
     const fetchVotingStatus = async () => {
       try {
-        const response = await fetch('/get_voting_status?_t=${timestamp}');
+        const response = await fetch(`/get_voting_status?_t=${timestamp}`);
         const data = await response.json();
         if (!data.voting_status.Othervote) {
           // Voting for othervote is closed, redirect to the home page

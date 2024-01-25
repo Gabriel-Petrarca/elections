@@ -12,7 +12,7 @@ function President() {
   useEffect(() => {
     const fetchVotingStatus = async () => {
       try {
-        const response = await fetch('/get_voting_status?_t=${timestamp}', {
+        const response = await fetch(`/get_voting_status?_t=${timestamp}`, {
           method: 'GET',
           headers: {
             'Cache-Control': 'no-cache, no-store',
@@ -53,7 +53,7 @@ function President() {
   }, [navigate]);
 
   const fetchCandidates = () => {
-    fetch('/pres_candidates?_t=${timestamp}')
+    fetch(`/pres_candidates?_t=${timestamp}`)
       .then((response) => response.json())
       .then((data) => {
         console.log('Fetched candidates data:', data);
