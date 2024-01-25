@@ -72,7 +72,7 @@ const Admin = () => {
         <div className = 'admin_ao'>
             <h1>Alumni Outreach</h1>
             <button onClick={() => handleVoteAction('open', 'AO')}>Open Alumni Outreach Vote</button>
-            <button onClick={() => handleVoteAction('close', 'AO')}>Close President Vote</button>
+            <button onClick={() => handleVoteAction('close', 'AO')}>Close Alumni Outreach Vote</button>
         </div>
         <div className = 'admin_se'>
             <h1>Student Engagement</h1>

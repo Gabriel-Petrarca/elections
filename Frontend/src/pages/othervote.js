@@ -50,7 +50,7 @@ function Othervote() {
   }, [navigate]);
 
   const fetchCandidates = () => {
-    fetch('/othervote_options')
+    fetch(`/othervote_options?_t=${timestamp}`)
       .then((response) => response.json())
       .then((data) => {
         console.log('Fetched candidates data:', data);
@@ -59,7 +59,7 @@ function Othervote() {
       .catch((error) => console.error('Error fetching candidates:', error));
   };
   const fetchPrompt = () => {
-    fetch('/othervote_prompt')
+    fetch(`/othervote_prompt?_t=${timestamp}`)
       .then((response) => response.json())
       .then((data) => {
         console.log('Fetched prompt data:', data);
