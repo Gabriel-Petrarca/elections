@@ -8,6 +8,7 @@ function President() {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState(""); // State to store user's email
   const timestamp = new Date().getTime();
+  console.log('Timestamp:', timestamp);
 
   useEffect(() => {
     const fetchVotingStatus = async () => {
