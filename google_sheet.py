@@ -50,6 +50,8 @@ def add_vote(voter, candidate):
 
 def record_vote(col):
     for voter, candidate in voters_map.items():
+        global cell_list
+        cell_list.clear()
         # every voter is mapped to the candidate they voted for. Row index = voter
         row_index = login_info.col_values(3).index(voter) + 1  
         cell_list.append(Cell(row_index, col, candidate))
