@@ -23,7 +23,7 @@ othervote_options_data = get_othervote_options()
 
 # Function to add no-cache headers
 def add_no_cache_headers(response):
-    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
     response.headers['Access-Control-Allow-Origin'] = '*'
@@ -248,4 +248,4 @@ def not_found(e):
 
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=5000)
+    app.run()
