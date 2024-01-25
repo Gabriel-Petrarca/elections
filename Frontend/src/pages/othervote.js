@@ -10,11 +10,12 @@ function Othervote() {
   const [optionChosen, setOptionChosen] = useState("");
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState(""); // State to store user's email
+  const timestamp = new Date().getTime(); // or use any method to generate a unique value
 
   useEffect(() => {
     const fetchVotingStatus = async () => {
       try {
-        const response = await fetch('/get_voting_status');
+        const response = await fetch('/get_voting_status?_t=${timestamp}');
         const data = await response.json();
         if (!data.voting_status.Othervote) {
           // Voting for othervote is closed, redirect to the home page

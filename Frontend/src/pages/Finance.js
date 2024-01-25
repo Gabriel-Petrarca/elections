@@ -7,11 +7,12 @@ function Finance() {
   const [optionChosen, setOptionChosen] = useState("");
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState(""); // State to store user's email
+  const timestamp = new Date().getTime();
 
   useEffect(() => {
     const fetchVotingStatus = async () => {
       try {
-        const response = await fetch('/get_voting_status');
+        const response = await fetch('/get_voting_status?_t=${timestamp}');
         const data = await response.json();
         if (!data.voting_status.Finance) {
           // Voting for Finance is closed, redirect to the home page
@@ -45,7 +46,7 @@ function Finance() {
   }, [navigate]);
 
   const fetchCandidates = () => {
-    fetch('/finance_candidates')
+    fetch('/finance_candidates?_t=${timestamp}')
       .then((response) => response.json())
       .then((data) => {
         console.log('Fetched candidates data:', data);

@@ -5,11 +5,11 @@ import '../Styles/admin.css'
 
 const Admin = () => {
   const [isAdmin, setIsAdmin] = useState(null);
-
+  const timestamp = new Date().getTime();
   useEffect(() => {
     const checkAdminStatus = async () => {
       try {
-        const response = await fetch('/check_admin_status', {
+        const response = await fetch('/check_admin_status?_t=${timestamp}', {
           credentials: 'include',
         });
 
