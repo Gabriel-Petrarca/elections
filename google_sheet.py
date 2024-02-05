@@ -49,14 +49,15 @@ def add_vote(voter, candidate):
     voters_map[voter] = candidate
 
 def record_vote(col):
-    for voter, candidate in voters_map.items():
-        global cell_list
-        cell_list.clear()
+    global cell_list
+    if voters_map:
+        for voter, candidate in voters_map.items():        
         # every voter is mapped to the candidate they voted for. Row index = voter
-        row_index = login_info.col_values(3).index(voter) + 1  
-        cell_list.append(Cell(row_index, col, candidate))
-    login_info.update_cells(cell_list)
+            row_index = login_info.col_values(3).index(voter) + 1  
+            cell_list.append(Cell(row_index, col, candidate))
+        login_info.update_cells(cell_list)
     voters_map.clear()
+    cell_list.clear()
 
 # get all data from sheet and store them as a variable
 def get_pres_candidates():
